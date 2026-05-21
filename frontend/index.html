@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> FAILSAFE | Early Intervention Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="main-header">
+            <div class="logo-area">
+                <span class="shield-icon">🛡️</span>
+                <div>
+                    <h1>FAILSAFE</h1>
+                    <p>Early Warning System Pipeline & PostgreSQL Engine</p>
+                </div>
+            </div>
+            <div id="connectionStatus" class="status-pill status-checking">Checking Core API Link...</div>
+        </header>
+
+        <main class="dashboard-grid">
+            <section class="glass-card intake-section">
+                <div class="card-header">
+                    <h2> Student Profile Diagnostic Intake</h2>
+                </div>
+                
+                <form id="failsafeForm">
+                    <div class="input-row single">
+                        <div class="form-group">
+                            <label for="studentId">Unique Student ID Reference</label>
+                            <input type="text" id="studentId" value="STU555" required placeholder="e.g., STU001">
+                        </div>
+                    </div>
+
+                    <div class="subjects-split-container">
+                        <div class="subject-card math-theme">
+                            <h3> Mathematics Metrics</h3>
+                            <div class="form-group">
+                                <label for="mFailures">Past Track Failures (0 - 4)</label>
+                                <input type="number" id="mFailures" min="0" max="4" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="mAbsences">School Absences Count (0 - 93)</label>
+                                <input type="number" id="mAbsences" min="0" max="93" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="mG1">Period 1 Score (G1: 0 - 20)</label>
+                                <input type="number" id="mG1" min="0" max="20" value="11" placeholder="0-20">
+                            </div>
+                            <div class="form-group">
+                                <label for="mG2">Period 2 Score (G2: 0 - 20)</label>
+                                <input type="number" id="mG2" min="0" max="20" value="10" placeholder="0-20">
+                            </div>
+                            <div class="form-group">
+                                <label for="mStudytime">Weekly Study Plan Tier</label>
+                                <select id="mStudytime">
+                                    <option value="1">&lt; 2 Hours</option>
+                                    <option value="2" selected>2 - 5 Hours</option>
+                                    <option value="3">5 - 10 Hours</option>
+                                    <option value="4">&gt; 10 Hours</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="subject-card por-theme">
+                            <h3>Portuguese Metrics</h3>
+                            <div class="form-group">
+                                <label for="pFailures">Past Track Failures (0 - 4)</label>
+                                <input type="number" id="pFailures" min="0" max="4" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="pAbsences">School Absences Count (0 - 93)</label>
+                                <input type="number" id="pAbsences" min="0" max="93" value="0">
+                            </div>
+                            <div class="form-group">
+                                <label for="pG1">Period 1 Score (G1: 0 - 20)</label>
+                                <input type="number" id="pG1" min="0" max="20" value="15" placeholder="0-20">
+                            </div>
+                            <div class="form-group">
+                                <label for="pG2">Period 2 Score (G2: 0 - 20)</label>
+                                <input type="number" id="pG2" min="0" max="20" value="14" placeholder="0-20">
+                            </div>
+                            <div class="form-group">
+                                <label for="pStudytime">Weekly Study Plan Tier</label>
+                                <select id="pStudytime">
+                                    <option value="1">&lt; 2 Hours</option>
+                                    <option value="2">2 - 5 Hours</option>
+                                    <option value="3" selected>5 - 10 Hours</option>
+                                    <option value="4">&gt; 10 Hours</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="glow-submit-btn"> Run Risk Diagnosis Model</button>
+                </form>
+            </section>
+
+            <section class="glass-card monitoring-section">
+                <div class="card-header">
+                    <h2> Engine Diagnostics Real-Time Readout</h2>
+                </div>
+                
+                <div id="runtimeMessage" class="state-container idle">
+                    <div class="pulse-ring"></div>
+                    <p id="runtimeText">System Standing By. Feed data parameters to run evaluations.</p>
+                </div>
+
+                <div id="analyticsPayload" class="hidden">
+                    <div class="composite-display-panel">
+                        <div class="risk-circle-wrapper">
+                            <div id="compositeRiskVal" class="risk-number">0.0%</div>
+                            <span class="subtext">Risk Index Matrix</span>
+                        </div>
+                        <div class="tier-badge-container">
+                            <span class="panel-label">Unified Standing Classification</span>
+                            <div id="globalTierBadge" class="global-tier-badge">Clear Standing</div>
+                        </div>
+                    </div>
+
+                    <div class="track-cards-wrapper">
+                        <h3> Isolated Track Analysis Summaries</h3>
+                        <div id="dynamicSubjectTracksContainer" class="tracks-flex-box">
+                            </div>
+                    </div>
+
+                    <div class="intervention-protocol-display">
+                        <div class="protocol-header">
+                            <span class="protocol-icon"></span>
+                            <h3>Operational Intervention Protocol Dispatch</h3>
+                        </div>
+                        <p id="protocolCopy">Awaiting model payload tracking indexes...</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

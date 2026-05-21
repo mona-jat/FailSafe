@@ -19,6 +19,20 @@ app = FastAPI(
     version="3.0.0"
 )
 
+from fastapi.middleware.cors import CORSMiddleware
+
+# Initialize your app if not already done
+# app = FastAPI()
+
+# Add this CORS middleware block right here:
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows your Live Server (http://127.0.0.1:5500) to connect
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows POST, GET, etc.
+    allow_headers=["*"],
+)
+
 # --- LOAD MACHINE LEARNING MODEL AND SCALER ---
 class SafeModelPredictor:
     def predict(self, features):
@@ -214,3 +228,4 @@ def evaluate_student(profile: DynamicStudentProfile, db: Session = Depends(get_d
     db.refresh(db_record)
  
     return final_response_data
+    
