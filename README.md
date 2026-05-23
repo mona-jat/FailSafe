@@ -27,8 +27,8 @@ To unlock deep hidden behavioral indicators within the raw data, custom continuo
 
 * **Study Plan Efficiency Index:** Evaluates targeted performance focus by measuring continuous weekly study blocks against the student's available leisure overhead using a safety offset denominator:
   $$\text{Study\_Efficiency} = \frac{\text{studytime}}{\text{freetime} + 1}$$
-* **Total Alcohol Consumption Indicator (`Total_Alc`):** A consolidated numeric value aggregating weekday (`Dalc`) and weekend (`Walc`) dependency thresholds to map lifestyle impacts on cognitive performance and class attendance.
-* **Support Matrix Depth (`Total_Support`):** A structural summary feature mapping multi-channel safety nets by summing binary markers for institutional assistance (`schoolsup`), familial backing (`famsup`), and independent private tutoring (`paid`).
+* **Total Alcohol Consumption Indicator (`Total\_Alc`):** A consolidated numeric value aggregating weekday (`Dalc`) and weekend (`Walc`) dependency thresholds to map lifestyle impacts on cognitive performance and class attendance.
+* **Support Matrix Depth (`Total\_Support`):** A structural summary feature mapping multi-channel safety nets by summing binary markers for institutional assistance (`schoolsup`), familial backing (`famsup`), and independent private tutoring (`paid`).
 * **One-Hot Categorical Expansion:** Nominal multi-class categorical parameters (`Mjob`, `Fjob`, `reason`, `guardian`) are programmatically expanded into explicit flat binary sparse dimensions (`pd.get_dummies`) to ensure immaculate split math configurations for tree models.
 
 ### 3. Hyperparameter Configurations & Validation Performance
@@ -87,36 +87,30 @@ Local Interpretability: Waterfall plots show how specific inputs shift individua
 
 ### 1. Environment Initialization
 Clone this repository to your local architecture, navigate to the base directory, spin up a secure Python virtual environment, and install the required core dependencies:
-
-# Clone the repository
-git clone [https://github.com/mona-jat/failsafe-project.git](https://github.com/mona-jat/failsafe-project.git)
-cd failsafe-project
-
-# Create a virtual environment
+```bash
+git clone https://github.com/mona-jat/FailSafe.git
+cd FailSafe
 python3 -m venv venv
-
-# Activate the virtual environment
-source venv/bin/activate  
-
-# Install dependencies
+source venv/bin/activate
 pip install -r requirements.txt
-
+```
 ### 2. Database Provisioning
 1. Open your PostgreSQL terminal or **pgAdmin** and create a new relational database named `failsafe_db`:
 ```sql
 CREATE DATABASE failsafe_db;
-
+```
 ### 3. Server Initialization
 Launch the high-performance ASGI application gateway using the active Uvicorn worker context. This will automatically bind to `http://127.0.0.1:8000`:
 
-```
+```bash
 uvicorn backend.main:app --reload
-
+```
 ### 4. Client Dashboard Deployment
 To open the interactive interface and bypass potential CORS or local asset loading issues, serve the assets inside your `frontend/` directory using a local web server:
 
 * **Option A (Recommended):** Right-click `frontend/index.html` inside VS Code and select **Open with Live Server**.
 * **Option B (Python CLI):** Run the following commands inside your terminal to serve the directory on port `5501`:
-```
+```bash
   cd frontend
   python3 -m http.server 5501
+  ```
