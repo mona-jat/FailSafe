@@ -10,7 +10,7 @@ The platform processes multidimensional student tracking vectors across both **M
 
 The system uses a modern, completely decoupled multi-tier architectural blueprint built for robust data validation and real-time inference processing:
 
-1. **Frontend Viewport Interface:** A clean, dark-themed responsive dashboard utilizing localized DOM event listeners to capture parameters side-by-side. It programmatically monitors form interactions to generate dynamic conditional payload object trees (`math_performance` and `portuguese_performance`).
+1. **Frontend Viewport Interface:** A clean, dark-themed responsive dashboard utilizing localized DOM event listeners to capture parameters side-by-side. It programmatically monitors form interactions to generate dynamic conditional payload object trees (`math-performance` and `portuguese-performance`).
 2. **API Gateway (FastAPI):** An ultra-high-performance ASGI application gateway managed by an active Uvicorn worker process. It strictly locks data consistency and error boundaries via automated Pydantic data models.
 3. **Predictive Pipeline Core:** Core estimators stored as serialized binary `.pkl` files. When an execution request hits the gateway, the application dynamically hydrates pre-fit Scikit-Learn standardizing transformers and custom hyperparameter-tuned XGBoost regression matrices to run parallel calculations.
 4. **Persistence Layer (PostgreSQL):** A relational data layer storing absolute analytics telemetry strings—including target features, explicit student ID tokens, computed composite averages, and action items—for permanent auditing.
@@ -26,10 +26,10 @@ The underlying estimators are trained on the UCI Student Performance datasets, c
 To unlock deep hidden behavioral indicators within the raw data, custom continuous and discrete engineering transformations are processed in real time:
 
 * **Study Plan Efficiency Index:** Evaluates targeted performance focus by measuring continuous weekly study blocks against the student's available leisure overhead using a safety offset denominator:
-  $$\text{Study\_Efficiency} = \frac{\text{studytime}}{\text{freetime} + 1}$$
-* **Total Alcohol Consumption Indicator (`Total\_Alc`):** A consolidated numeric value aggregating weekday (`Dalc`) and weekend (`Walc`) dependency thresholds to map lifestyle impacts on cognitive performance and class attendance.
-* **Support Matrix Depth (`Total\_Support`):** A structural summary feature mapping multi-channel safety nets by summing binary markers for institutional assistance (`schoolsup`), familial backing (`famsup`), and independent private tutoring (`paid`).
-* **One-Hot Categorical Expansion:** Nominal multi-class categorical parameters (`Mjob`, `Fjob`, `reason`, `guardian`) are programmatically expanded into explicit flat binary sparse dimensions (`pd.get_dummies`) to ensure immaculate split math configurations for tree models.
+  $$\text{Study-Efficiency} = \frac{\text{studytime}}{\text{freetime} + 1}$$
+* **Total Alcohol Consumption Indicator (`Total-Alc`):** A consolidated numeric value aggregating weekday (`Dalc`) and weekend (`Walc`) dependency thresholds to map lifestyle impacts on cognitive performance and class attendance.
+* **Support Matrix Depth (`Total-Support`):** A structural summary feature mapping multi-channel safety nets by summing binary markers for institutional assistance (`schoolsup`), familial backing (`famsup`), and independent private tutoring (`paid`).
+* **One-Hot Categorical Expansion:** Nominal multi-class categorical parameters (`Mjob`, `Fjob`, `reason`, `guardian`) are programmatically expanded into explicit flat binary sparse dimensions (`pd.get-dummies`) to ensure immaculate split math configurations for tree models.
 
 ### 3. Hyperparameter Configurations & Validation Performance
 The analytical core uses distinct tree optimization frameworks to map the variance of each unique curriculum dataset properly:
