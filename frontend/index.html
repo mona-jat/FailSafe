@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> FAILSAFE | Early Intervention Dashboard</title>
+    <title>🛡️ FAILSAFE | Early Intervention Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="app-container">
         <header class="main-header">
             <div class="logo-area">
-                <span class="shield-icon">🛡️</span>
+                <span class="shield-icon"></span>
                 <div>
                     <h1>FAILSAFE</h1>
                     <p>Early Warning System Pipeline & PostgreSQL Engine</p>
@@ -35,28 +35,29 @@
 
                     <div class="subjects-split-container">
                         <div class="subject-card math-theme">
-                            <h3> Mathematics Metrics</h3>
+                            <h3>Mathematics Metrics</h3>
                             <div class="form-group">
                                 <label for="mFailures">Past Track Failures (0 - 4)</label>
-                                <input type="number" id="mFailures" min="0" max="4" value="0">
+                                <input type="number" id="mFailures" min="0" max="4" value="" placeholder="e.g., 0">
                             </div>
                             <div class="form-group">
                                 <label for="mAbsences">School Absences Count (0 - 93)</label>
-                                <input type="number" id="mAbsences" min="0" max="93" value="0">
+                                <input type="number" id="mAbsences" min="0" max="93" value="" placeholder="e.g., 6">
                             </div>
                             <div class="form-group">
                                 <label for="mG1">Period 1 Score (G1: 0 - 20)</label>
-                                <input type="number" id="mG1" min="0" max="20" value="11" placeholder="0-20">
+                                <input type="number" id="mG1" min="0" max="20" value="" placeholder="e.g., 11">
                             </div>
                             <div class="form-group">
                                 <label for="mG2">Period 2 Score (G2: 0 - 20)</label>
-                                <input type="number" id="mG2" min="0" max="20" value="10" placeholder="0-20">
+                                <input type="number" id="mG2" min="0" max="20" value="" placeholder="e.g., 10">
                             </div>
                             <div class="form-group">
                                 <label for="mStudytime">Weekly Study Plan Tier</label>
                                 <select id="mStudytime">
+                                    <option value="">-- Select Hours --</option>
                                     <option value="1">&lt; 2 Hours</option>
-                                    <option value="2" selected>2 - 5 Hours</option>
+                                    <option value="2">2 - 5 Hours</option>
                                     <option value="3">5 - 10 Hours</option>
                                     <option value="4">&gt; 10 Hours</option>
                                 </select>
@@ -64,29 +65,30 @@
                         </div>
 
                         <div class="subject-card por-theme">
-                            <h3>Portuguese Metrics</h3>
+                            <h3> Portuguese Metrics</h3>
                             <div class="form-group">
                                 <label for="pFailures">Past Track Failures (0 - 4)</label>
-                                <input type="number" id="pFailures" min="0" max="4" value="0">
+                                <input type="number" id="pFailures" min="0" max="4" value="" placeholder="e.g., 0">
                             </div>
                             <div class="form-group">
                                 <label for="pAbsences">School Absences Count (0 - 93)</label>
-                                <input type="number" id="pAbsences" min="0" max="93" value="0">
+                                <input type="number" id="pAbsences" min="0" max="93" value="" placeholder="e.g., 2">
                             </div>
                             <div class="form-group">
                                 <label for="pG1">Period 1 Score (G1: 0 - 20)</label>
-                                <input type="number" id="pG1" min="0" max="20" value="15" placeholder="0-20">
+                                <input type="number" id="pG1" min="0" max="20" value="" placeholder="e.g., 15">
                             </div>
                             <div class="form-group">
                                 <label for="pG2">Period 2 Score (G2: 0 - 20)</label>
-                                <input type="number" id="pG2" min="0" max="20" value="14" placeholder="0-20">
+                                <input type="number" id="pG2" min="0" max="20" value="" placeholder="e.g., 14">
                             </div>
                             <div class="form-group">
                                 <label for="pStudytime">Weekly Study Plan Tier</label>
                                 <select id="pStudytime">
+                                    <option value="">-- Select Hours --</option>
                                     <option value="1">&lt; 2 Hours</option>
                                     <option value="2">2 - 5 Hours</option>
-                                    <option value="3" selected>5 - 10 Hours</option>
+                                    <option value="3">5 - 10 Hours</option>
                                     <option value="4">&gt; 10 Hours</option>
                                 </select>
                             </div>
@@ -121,8 +123,7 @@
 
                     <div class="track-cards-wrapper">
                         <h3> Isolated Track Analysis Summaries</h3>
-                        <div id="dynamicSubjectTracksContainer" class="tracks-flex-box">
-                            </div>
+                        <div id="dynamicSubjectTracksContainer" class="tracks-flex-box"></div>
                     </div>
 
                     <div class="intervention-protocol-display">

@@ -1,123 +1,182 @@
-const BACKEND_URL = "http://127.0.0.1:8000";
+const API_BASE_URL = "http://127.0.0.1:8000";
 
-// 1. Check API heartbeat connection status on page initialization
-async function evaluateHeartbeatSignal() {
-    const indicator = document.getElementById('connectionStatus');
+// --- STEP 1: INITIALIZE APPLICATION & VERIFY BACKEND CONNECTION ---
+document.addEventListener("DOMContentLoaded", async () => {
+    const connectionStatus = document.getElementById("connectionStatus");
+    
     try {
-        const response = await fetch(`${BACKEND_URL}/`);
-        const statusReport = await response.json();
-        if (statusReport.status === "online" && statusReport.database_connected) {
-            indicator.className = "status-pill status-online";
-            indicator.innerText = "⚡ API Matrix Engine & PostgreSQL Online";
+        const response = await fetch(`${API_BASE_URL}/`);
+        if (response.ok) {
+            connectionStatus.innerText = "● Core API Link Active";
+            connectionStatus.className = "status-pill status-connected";
+        } else {
+            throw new Error("Gateway Unreachable");
         }
-    } catch {
-        indicator.className = "status-pill status-offline";
-        indicator.innerText = "🛑 Connection Interrupted: Check Local Server Port 8000";
+    } catch (error) {
+        console.error("Backend offline:", error);
+        connectionStatus.innerText = "● Core API Link Disconnected";
+        connectionStatus.className = "status-pill status-emergency";
     }
-}
+});
 
-// 2. Capture, format metrics, and pass data structures to FastAPI endpoint
-document.getElementById('failsafeForm').addEventListener('submit', async (e) => {
+// --- STEP 2: HANDLE REAL-TIME EVALUATION FORM SUBMISSION ---
+document.getElementById("failsafeForm").addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const runtimeMessage = document.getElementById('runtimeMessage');
-    const runtimeText = document.getElementById('runtimeText');
-    const analyticsPayload = document.getElementById('analyticsPayload');
-    const trackContainer = document.getElementById('dynamicSubjectTracksContainer');
+    // UI Elements for visibility toggling
+    const runtimeMessage = document.getElementById("runtimeMessage");
+    const analyticsPayload = document.getElementById("analyticsPayload");
+    
+    // Switch readout visibility to loading/calculating state
+    runtimeMessage.className = "state-container loading";
+    document.getElementById("runtimeText").innerText = "Executing mathematical tree estimators and persisting records...";
+    analyticsPayload.classList.add("hidden");
 
-    // Trigger visual processing loading state animations
-    runtimeMessage.className = "state-container processing";
-    runtimeText.innerText = "Querying calculations across active subject matrix modules...";
-    analyticsPayload.classList.add('hidden');
-    trackContainer.innerHTML = "";
+    // Extract core student identification token
+    const studentId = document.getElementById("studentId").value;
 
-    // Build values dynamically following your system's precise Pydantic schemas
-    const mG1 = document.getElementById('mG1').value;
-    const mG2 = document.getElementById('mG2').value;
-    const pG1 = document.getElementById('pG1').value;
-    const pG2 = document.getElementById('pG2').value;
+    // Capture Mathematics Feature Parameters
+    const mG1 = document.getElementById("mG1").value;
+    const mG2 = document.getElementById("mG2").value;
+    const mFailures = document.getElementById("mFailures").value;
+    const mAbsences = document.getElementById("mAbsences").value;
+    const mStudytime = document.getElementById("mStudytime").value;
 
+    // Capture Portuguese Feature Parameters
+    const pG1 = document.getElementById("pG1").value;
+    const pG2 = document.getElementById("pG2").value;
+    const pFailures = document.getElementById("pFailures").value;
+    const pAbsences = document.getElementById("pAbsences").value;
+    const pStudytime = document.getElementById("pStudytime").value;
+
+    // --- STEP 3: ASSEMBLE CONDITIONAL PAYLOAD TREE OBJECTS ---
+   
     const payload = {
-        student_id: document.getElementById('studentId').value,
+        student_id: studentId,
         math_performance: (mG1 || mG2) ? {
-            failures: parseInt(document.getElementById('mFailures').value) || 0,
-            absences: parseInt(document.getElementById('mAbsences').value) || 0,
+            failures: parseInt(mFailures) || 0,
+            absences: parseInt(mAbsences) || 0,
             G1: parseInt(mG1) || 0,
             G2: parseInt(mG2) || 0,
-            studytime: parseInt(document.getElementById('mStudytime').value)
+            studytime: parseInt(mStudytime) || 2
         } : null,
         portuguese_performance: (pG1 || pG2) ? {
-            failures: parseInt(document.getElementById('pFailures').value) || 0,
-            absences: parseInt(document.getElementById('pAbsences').value) || 0,
+            failures: parseInt(pFailures) || 0,
+            absences: parseInt(pAbsences) || 0,
             G1: parseInt(pG1) || 0,
             G2: parseInt(pG2) || 0,
-            studytime: parseInt(document.getElementById('pStudytime').value)
+            studytime: parseInt(pStudytime) || 3
         } : null
     };
 
+    // --- STEP 4: DISPATCH ASYNC DATA FETCH REQUEST TO FASTAPI ---
     try {
-        const response = await fetch(`${BACKEND_URL}/predict`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+        console.log("SENDING PAYLOAD TO BACKEND:", JSON.stringify(payload, null, 2));
+        const response = await fetch(`${API_BASE_URL}/api/predict`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json" ,
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsInJvbGUiOiJmYWN1bHR5IiwiZXhwIjoxNzc5NTMwNTI0fQ.RXZ653IpOvO9u5L4Hp5uuIw7qhO3cwrDGMfz_LSnJ58"
+            },
             body: JSON.stringify(payload)
         });
 
         if (!response.ok) {
-            const errDetails = await response.json();
-            throw new Error(errDetails.detail || "API Endpoint processing fault.");
+            throw new Error(`Execution Pipeline Returned Status Code: ${response.status}`);
+        }
+       
+        const data = await response.json();
+        console.log("Backend Response Data:", data);
+
+        
+        runtimeMessage.classList.add("hidden");
+        analyticsPayload.classList.remove("hidden");
+
+        // --- STEP 5: PAINT UNIFIED GLOBAL INTERVENTION COMPOSITE RESULTS ---
+        const summary = data.unified_academic_summary || {};
+        const riskTierStr = summary.global_standing_classification || "Low Risk"; 
+        const interventionStr = summary.actionable_intervention_protocol || "Routine Tracking: Continue normal curriculum.";
+        const compositeScore = summary.composite_risk_average || "N/A";
+
+        
+        const compositeRiskElement = document.getElementById("compositeRiskVal");
+        if (compositeRiskElement) {
+            compositeRiskElement.innerText = compositeScore;
         }
 
-        const data = await response.json();
-
-        // Bind global structural data layouts directly from final_response_data format
-        const globalSummary = data.unified_academic_summary;
-        document.getElementById('compositeRiskVal').innerText = globalSummary.composite_risk_average;
-        
-        const badge = document.getElementById('globalTierBadge');
-        badge.innerText = globalSummary.global_standing_classification;
-        
-        // Dynamic badge color code logic using tier checks
-        const tierStr = globalSummary.global_standing_classification;
-        if (tierStr.includes("Emergency")) badge.className = "global-tier-badge critical-alert";
-        else if (tierStr.includes("Watchlist")) badge.className = "global-tier-badge monitoring-alert";
-        else badge.className = "global-tier-badge standard-alert";
-
-        document.getElementById('protocolCopy').innerText = globalSummary.actionable_intervention_protocol;
-
-        // Render inner arrays from matching subject maps
-        Object.keys(data.individual_subject_diagnostics).forEach(trackKey => {
-            const trackData = data.individual_subject_diagnostics[trackKey];
-            const diagnosticInfo = trackData.diagnostic; // Unpacks get_subject_insights mapping model
+       
+        const badge = document.getElementById("globalTierBadge");
+        if (badge) {
+            badge.innerText = riskTierStr;
+            badge.className = "global-tier-badge"; 
             
-            let colorClass = "stable-border";
-            if (diagnosticInfo.risk_tier.includes("High")) colorClass = "high-border";
-            else if (diagnosticInfo.risk_tier.includes("Moderate")) colorClass = "mod-border";
+            if (riskTierStr.includes("High") || riskTierStr.includes("Emergency") || riskTierStr.includes("Critical")) {
+                badge.classList.add("badge-emergency");
+            } else if (riskTierStr.includes("Medium") || riskTierStr.includes("Watchlist")) {
+                badge.classList.add("badge-watchlist");
+            } else {
+                badge.classList.add("badge-clear");
+            }
+        }
 
-            const elementCard = document.createElement('div');
-            elementCard.className = `subject-diagnostic-widget ${colorClass}`;
-            elementCard.innerHTML = `
-                <div class="widget-top">
-                    <h4>${trackKey.toUpperCase()} METRIC MATRIX</h4>
-                    <span class="mini-pill">${diagnosticInfo.risk_tier}</span>
-                </div>
-                <p class="risk-idx-txt">Calculated Core Risk Index: <strong>${trackData.calculated_risk_index}</strong></p>
-                <div class="diagnostic-desc-block">
-                    <p><strong>Status Profile:</strong> ${diagnosticInfo.status}</p>
-                    <p class="action-highlight"><strong>Intervention Map:</strong> ${diagnosticInfo.intervention}</p>
-                </div>
-            `;
-            trackContainer.appendChild(elementCard);
-        });
+        const protocolElement = document.getElementById("protocolCopy");
+        if (protocolElement) {
+            protocolElement.innerText = interventionStr;
+        }
 
-        // Toggle visibility to render graphs
-        runtimeMessage.classList.add('hidden');
-        analyticsPayload.classList.remove('hidden');
+        // --- STEP 6: DYNAMIC SUBJECT CARDS RENDERING ---
+        const trackContainer = document.getElementById("dynamicSubjectTracksContainer"); 
+        if (trackContainer) {
+            trackContainer.innerHTML = ""; 
 
-    } catch (err) {
-        runtimeMessage.className = "state-container application-error";
-        runtimeText.innerText = `Data Pipeline Execution Failure: ${err.message}`;
+            const subjectDiagnostics = data.individual_subject_diagnostics || {};
+
+            
+            if (mG1 || mG2) {
+                const mathData = subjectDiagnostics["mathematics"] || subjectDiagnostics["Mathematics"];
+                if (mathData) {
+                    renderTrackCard(trackContainer, "Mathematics", mathData, "math-card-theme");
+                }
+            }
+
+            if (pG1 || pG2) {
+                const porData = subjectDiagnostics["portuguese"] || subjectDiagnostics["Portuguese"];
+                if (porData) {
+                    renderTrackCard(trackContainer, "Portuguese", porData, "por-card-theme");
+                }
+            }
+        }
+
+    } catch (error) {
+        console.error("Pipeline failure:", error);
+        runtimeMessage.className = "state-container idle";
+        
+        const runtimeText = document.getElementById("runtimeText");
+        if (runtimeText) {
+            runtimeText.innerText = "⚠️ An error occurred processing calculations. Verify terminal server.";
+        }
+        
+        alert("Pipeline failed to parse data response. Please check your console logs.");
     }
 });
 
-// Run API link configuration 
-evaluateHeartbeatSignal();
+// --- STEP 7: DYNAMIC LAYOUT TEMPLATE INJECTION HELPER ---
+function renderTrackCard(container, title, trackData, themeClass) {
+    const score = trackData.calculated_risk_index || "N/A";
+    const diag = trackData.diagnostic || {};
+    const riskTier = diag.risk_tier || "Low Risk";
+    const intervention = diag.intervention || "No critical steps mapped.";
+    
+    const badgeClass = (riskTier.toLowerCase().includes("high") || riskTier.toLowerCase().includes("emergency")) ? "badge-high" : "badge-low";
+
+    container.innerHTML += `
+        <div class="track-card ${themeClass}">
+            <div class="track-card-header">
+                <h4>${title.toUpperCase()} METRIC MATRIX</h4>
+                <span class="status-badge ${badgeClass}">${riskTier.toUpperCase()}</span>
+            </div>
+            <p><strong>Calculated Core Risk Index:</strong> ${score}</p>
+            <p><strong>Intervention Map:</strong> ${intervention}</p>
+        </div>
+    `;
+}
